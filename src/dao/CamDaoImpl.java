@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exception.CamNotFoundException;
+import exception.CamNotSavedException;
 import jndi.JndiFactory;
 import model.Cam;
 
@@ -17,12 +18,55 @@ public class CamDaoImpl implements CamDao  {
 	
 	@Override
 	public void save(Cam cam) {
+		if (cam == null)
+			throw new IllegalArgumentException("cam can not be null");
 		
+		Connection connection = null;		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");			
+			if (cam.getId() == null) {
+				PreparedStatement pstmt = connection.prepareStatement("insert into cam (name, url, status) values (?,?,?)");
+				pstmt.setString(1, cam.getName());
+				pstmt.setString(2, cam.getUrl());
+				pstmt.setBoolean(3, cam.isStatus());
+				pstmt.executeUpdate();
+			} else {
+				PreparedStatement pstmt = connection.prepareStatement("update cam set name = ?, url = ?, status = ? where id = ?");
+				pstmt.setString(1, cam.getName());
+				pstmt.setString(2, cam.getUrl());
+				pstmt.setString(3, cam.isStatus()?"1":"0");
+				pstmt.setLong(4, cam.getId());
+				pstmt.executeUpdate();
+			}			
+		} catch (Exception e) {
+			throw new CamNotSavedException();
+		} finally {
+			closeConnection(connection);
+		}
 	}
 
 	@Override
-	public void toggleStatus(Long id) {
+	public void toggleStatus(Long id, String status) {
+		Connection connection = null;		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");			
+			
+			if(status.equals("false")){
+				status = "1";
+			}else{
+				status = "0";
+			}
 		
+			PreparedStatement pstmt = connection.prepareStatement("update cam set status = ? where id = ?");
+			pstmt.setString(1, status);
+			pstmt.setLong(2, id);
+			pstmt.executeUpdate();
+					
+		} catch (Exception e) {
+			throw new CamNotSavedException();
+		} finally {
+			closeConnection(connection);
+		}
 	}
 
 	@Override
@@ -34,7 +78,7 @@ public class CamDaoImpl implements CamDao  {
 		try {
 			connection = jndi.getConnection("jdbc/postgres");			
 			
-				PreparedStatement pstmt = connection.prepareStatement("select id, name, url, status from cam");				
+				PreparedStatement pstmt = connection.prepareStatement("select * from cam order by id asc");				
 				ResultSet rs = pstmt.executeQuery();
 								
 				while (rs.next()) {
@@ -57,9 +101,30 @@ public class CamDaoImpl implements CamDao  {
 
 	@Override
 	public Cam getCam(Long id) {
-		Cam cam  = new Cam();
+		if (id == null)
+			throw new IllegalArgumentException("id can not be null");
 		
-		return cam;
+		Connection connection = null;		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");			
+			PreparedStatement pstmt = connection.prepareStatement("select * from cam where id = ?");
+			pstmt.setLong(1, id);
+			ResultSet rs = pstmt.executeQuery();							
+			if (rs.next()) {
+				Cam cam = new Cam();
+				cam.setId(rs.getLong("id"));
+				cam.setName(rs.getString("name"));
+				cam.setUrl(rs.getString("url"));
+				cam.setStatus(rs.getBoolean("status"));
+				return cam;
+			} else {
+				throw new CamNotFoundException(id);
+			}			
+		} catch (Exception e) {
+			throw new CamNotFoundException(id);
+		} finally {	
+			closeConnection(connection);
+		}
 	}
 	
 	private void closeConnection(Connection connection) {

@@ -2,12 +2,12 @@ package model;
 
 public class Cam {
 	
-	private long id;
+	private Long id;
 	private String name;
 	private String url;
 	private boolean status;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
