@@ -15,14 +15,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import dao.CamDao;
+import dao.DaoFactory;
+import dao.PictureDao;
+
+import model.Cam;
+import model.Picture;
 
 
 
 public class PictureGrabber implements Runnable {
 	public static final String PATH = "/Users/floatec/";
-
+	final CamDao camDao = DaoFactory.getInstance().getCamDao();
+	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
+	
 	public static void saveImage(String imageUrl, String destinationFile) throws IOException {
 		URL url = new URL(imageUrl);
 		InputStream is = url.openStream();
@@ -50,11 +60,22 @@ public class PictureGrabber implements Runnable {
 			int day = calendar.get(Calendar.DAY_OF_WEEK); 
 			String path = PATH +calendar.get(Calendar.YEAR) + "/" +
 					(calendar.get(Calendar.MONTH)+1) + "/" +calendar.get(Calendar.DAY_OF_MONTH) + "/";
-			File file = new File(path);
-			file.mkdirs();
 			
-			saveImage("http://img2.wikia.nocookie.net/__cb20111203174754/southpark/images/f/fc/South_Park_Season_14.PNG", 
-					path+calendar.getTimeInMillis()+".png");
+			List<Cam> collection = camDao.list();
+			System.out.println(collection.size());
+			for (Cam element : collection) {
+				File file = new File(path + element.getName()+"/");
+				file.mkdirs();
+				System.out.println(element.getName());
+				String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".png";
+				Picture picture = new Picture();
+				picture.setCamId(element.getId());
+				picture.setPath(saveTo);
+				pictureDao.save(picture);
+				saveImage(element.getUrl(), 
+						saveTo);
+			}
+			
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 		}
