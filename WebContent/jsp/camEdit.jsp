@@ -19,7 +19,7 @@
 					<td><input type="text" name="url" value="${cam.url}"></td>
 				</tr>		
 								<tr>		
-					<td>Aktiv:</td>	
+					<td>Aufnahme:</td>	
 					<c:if test="${cam.status}">
 						<td><input type="checkbox" name="status" value="status" checked></td>
 					</c:if>

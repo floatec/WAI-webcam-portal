@@ -39,7 +39,7 @@ public class CamEdit extends HttpServlet {
 			id = Long.valueOf(request.getParameter("id"));
 		}
 				
-		if(action.equals("add")){
+		if(action.equals("camAdd")){
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/camAdd.jsp");
 			dispatcher.forward(request, response);		
 		} else if(action.equals("camEdit")) {			

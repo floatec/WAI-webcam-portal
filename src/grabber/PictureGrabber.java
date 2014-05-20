@@ -29,7 +29,7 @@ import model.Picture;
 
 
 public class PictureGrabber implements Runnable {
-	public static final String PATH = "/Users/floatec/";
+	public static final String PATH = "E:\\bilder";
 	final CamDao camDao = DaoFactory.getInstance().getCamDao();
 	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
 	

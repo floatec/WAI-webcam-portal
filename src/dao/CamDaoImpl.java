@@ -28,7 +28,7 @@ public class CamDaoImpl implements CamDao  {
 				PreparedStatement pstmt = connection.prepareStatement("insert into cam (name, url, status) values (?,?,?)");
 				pstmt.setString(1, cam.getName());
 				pstmt.setString(2, cam.getUrl());
-				pstmt.setBoolean(3, cam.isStatus());
+				pstmt.setString(3, cam.isStatus()?"1":"0");
 				pstmt.executeUpdate();
 			} else {
 				PreparedStatement pstmt = connection.prepareStatement("update cam set name = ?, url = ?, status = ? where id = ?");

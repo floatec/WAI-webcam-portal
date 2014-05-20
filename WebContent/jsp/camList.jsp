@@ -7,12 +7,15 @@
     <title>Kameras</title>     
   </head>
   <body>
+  	<a href="edit?action=camAdd">+ Neue Kamera hizufügen</a>
+  	<br />
+  	<br />
   	<table border="1">
   		<tbody>
 	  		<tr>	
 				<td>Name</td>
 				<td>URL</td>
-				<td>Aktiv</td>
+				<td>Aufnahme</td>
 				<td>Aktion</td>
 			</tr>			
 			<c:forEach var="cam" items="${cams}">
@@ -31,6 +34,5 @@
   		</tbody>
   	</table>
   	<br>
-  	<!-- <a href="edit?action=add">Neue Cam hinzufügen</a> -->
   </body>
 </html>
