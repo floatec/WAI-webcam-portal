@@ -20,4 +20,9 @@ public class DaoFactory {
 	public PictureDao getPictureDao() {
 		return new PictureDaoImpl();
 	}
+	
+	public UserDao getUserDao(){
+		return new UserDaoImpl();
+	}
+	
 }

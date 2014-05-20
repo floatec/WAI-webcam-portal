@@ -56,7 +56,7 @@ public class CamEdit extends HttpServlet {
 			try {
 				String status = request.getParameter("status");			
 				camDao.toggleStatus(id, status);
-				response.sendRedirect(request.getContextPath() + "/list");
+				response.sendRedirect(request.getContextPath() + "/camList");
 			} catch (CamNotToggledException e) {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
 				dispatcher.forward(request, response);
@@ -80,19 +80,16 @@ public class CamEdit extends HttpServlet {
 		cam.setId(id);
 		cam.setName(name);
 		cam.setUrl(url);
-		
-		System.out.println(status);
-		
+				
 		if(status == null){
 			cam.setStatus(false);
 		}else{
 			cam.setStatus(true);
 		}
-		
-		
+
 		try {		
 			camDao.save(cam);
-			response.sendRedirect(request.getContextPath() + "/list");
+			response.sendRedirect(request.getContextPath() + "/camList");
 		}  catch (CamNotSavedException e) {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
 			dispatcher.forward(request, response);
