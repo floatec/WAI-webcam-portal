@@ -56,8 +56,10 @@ public class CamDaoImpl implements CamDao  {
 	}
 
 	@Override
-	public void getCam(Long id) {
+	public Cam getCam(Long id) {
+		Cam cam  = new Cam();
 		
+		return cam;
 	}
 	
 	private void closeConnection(Connection connection) {
