@@ -11,17 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.camDao;
-import dao.BookDaoImpl;
+
 import dao.CamDao;
 import dao.DaoFactory;
-import exception.BookNotDeletedException;
-import exception.BookNotFoundException;
-import exception.BookNotSavedException;
 import exception.CamNotFoundException;
 import exception.CamNotSavedException;
 import exception.CamNotToggledException;
-import model.Book;
 import model.Cam;
 
 public class CamEdit extends HttpServlet {	
