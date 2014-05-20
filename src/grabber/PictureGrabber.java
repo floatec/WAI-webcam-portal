@@ -29,7 +29,7 @@ import model.Picture;
 
 
 public class PictureGrabber implements Runnable {
-	public static final String PATH = "/Users/floatec/";
+	public static final String PATH = "/Users/floatec/Documents/workspace/WAI-webcam-portal/WebContent/img/";
 	final CamDao camDao = DaoFactory.getInstance().getCamDao();
 	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
 	
@@ -58,13 +58,13 @@ public class PictureGrabber implements Runnable {
 		try {
 			Calendar calendar = Calendar.getInstance();
 			int day = calendar.get(Calendar.DAY_OF_WEEK); 
-			String path = PATH +calendar.get(Calendar.YEAR) + "/" +
+			String path = calendar.get(Calendar.YEAR) + "/" +
 					(calendar.get(Calendar.MONTH)+1) + "/" +calendar.get(Calendar.DAY_OF_MONTH) + "/";
 			
 			List<Cam> collection = camDao.list();
 			System.out.println(collection.size());
 			for (Cam element : collection) {
-				File file = new File(path + element.getName()+"/");
+				File file = new File(PATH + path + element.getName()+"/");
 				file.mkdirs();
 				System.out.println(element.getName());
 				String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".png";
@@ -73,7 +73,7 @@ public class PictureGrabber implements Runnable {
 				picture.setPath(saveTo);
 				pictureDao.save(picture);
 				saveImage(element.getUrl(), 
-						saveTo);
+						PATH + saveTo);
 			}
 			
 		} catch (Exception e) {
