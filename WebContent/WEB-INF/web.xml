@@ -6,8 +6,8 @@
     <servlet-class>servlets.CamList</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>BookEdit</servlet-name>
-    <servlet-class>servlets.BookEdit</servlet-class>
+    <servlet-name>CamEdit</servlet-name>
+    <servlet-class>servlets.CamEdit</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -15,7 +15,7 @@
     <url-pattern>/list</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>BookEdit</servlet-name>
+    <servlet-name>CamEdit</servlet-name>
     <url-pattern>/edit</url-pattern>
   </servlet-mapping>
 

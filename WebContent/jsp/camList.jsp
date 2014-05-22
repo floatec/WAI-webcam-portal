@@ -7,25 +7,32 @@
     <title>Kameras</title>     
   </head>
   <body>
+  	<a href="edit?action=camAdd">+ Neue Kamera hizufügen</a>
+  	<br />
+  	<br />
   	<table border="1">
   		<tbody>
-	  		<tr>
-	  			<td>Id</td>				
+	  		<tr>	
 				<td>Name</td>
 				<td>URL</td>
-				<td>Status</td>
+				<td>Aufnahme</td>
+				<td>Aktion</td>
 			</tr>			
 			<c:forEach var="cam" items="${cams}">
-				<tr>
-					<td><c:out value="${cam.id}"/></td>					
+				<tr>			
 					<td><c:out value="${cam.name}"/></td>
 					<td><c:out value="${cam.url}"/></td>
-					<td><c:out value="${cam.status}" /></td>
+					<td>
+						<a href="edit?action=toggleStatus&id=${cam.id}&status=${cam.status}">
+							<c:if test="${cam.status}">Aktiv</c:if>
+							<c:if test="${!cam.status}">Inaktiv</c:if>
+						</a>	
+					</td>
+					<td><a href="edit?action=camEdit&id=${cam.id}">Bearbeiten</a></td>
 				</tr>
 			</c:forEach>	
   		</tbody>
   	</table>
   	<br>
-  	<!-- <a href="edit?action=add">Neue Cam hinzufügen</a> -->
   </body>
 </html>

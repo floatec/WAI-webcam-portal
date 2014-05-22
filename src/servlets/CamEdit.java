@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import dao.CamDao;
 import dao.DaoFactory;
 import exception.CamNotFoundException;
@@ -40,10 +39,10 @@ public class CamEdit extends HttpServlet {
 			id = Long.valueOf(request.getParameter("id"));
 		}
 				
-		if(action.equals("add")){
+		if(action.equals("camAdd")){
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/camAdd.jsp");
 			dispatcher.forward(request, response);		
-		} else if(action.equals("edit")) {			
+		} else if(action.equals("camEdit")) {			
 			try {
 				Cam cam = camDao.getCam(id);
 				request.setAttribute("cam", cam);
@@ -55,7 +54,8 @@ public class CamEdit extends HttpServlet {
 			}				
 		} else if(action.equals("toggleStatus")) {			
 			try {
-				camDao.toggleStatus(id);
+				String status = request.getParameter("status");			
+				camDao.toggleStatus(id, status);
 				response.sendRedirect(request.getContextPath() + "/list");
 			} catch (CamNotToggledException e) {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
@@ -74,11 +74,20 @@ public class CamEdit extends HttpServlet {
 		
 		String name = request.getParameter("name");
 		String url = request.getParameter("url");
+		String status = request.getParameter("status");
 				
 		Cam cam = new Cam();		
 		cam.setId(id);
 		cam.setName(name);
 		cam.setUrl(url);
+		
+		System.out.println(status);
+		
+		if(status == null){
+			cam.setStatus(false);
+		}else{
+			cam.setStatus(true);
+		}
 		
 		
 		try {		

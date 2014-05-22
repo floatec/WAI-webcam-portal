@@ -12,12 +12,21 @@
 			<tbody>
 				<tr>
 					<td>Name:</td>
-					<td><input type="text" name="name" value="${cam.author}"></td>		
+					<td><input type="text" name="name" value="${cam.name}"></td>		
 				</tr>
 				<tr>		
 					<td>URL:</td>	
-					<td><input type="text" name="url" value="${cam.title}"></td>
-				</tr>				
+					<td><input type="text" name="url" value="${cam.url}"></td>
+				</tr>		
+								<tr>		
+					<td>Aufnahme:</td>	
+					<c:if test="${cam.status}">
+						<td><input type="checkbox" name="status" value="status" checked></td>
+					</c:if>
+					<c:if test="${!cam.status}">
+						<td><input type="checkbox" name="status" value="status"></td>			
+					</c:if>
+				</tr>		
 				<tr>	
 					<td colspan="2"><input type="submit" name="btnSave" value="Save"></td>
 				</tr>				
