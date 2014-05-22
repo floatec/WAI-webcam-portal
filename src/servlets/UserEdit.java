@@ -52,11 +52,10 @@ private static final long serialVersionUID = 1L;
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
 				dispatcher.forward(request, response);
 			}				
-		} else if(action.equals("deleteUser")) {			
+		} else if(action.equals("userDelete")) {			
 			try {
-				String status = request.getParameter("status");			
 				userDao.deleteUser(id);
-				response.sendRedirect(request.getContextPath() + "/camList");
+				response.sendRedirect(request.getContextPath() + "/userList");
 			} catch (CamNotToggledException e) {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
 				dispatcher.forward(request, response);

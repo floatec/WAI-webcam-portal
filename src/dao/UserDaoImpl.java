@@ -12,6 +12,10 @@ import java.util.List;
 
 import exception.CamNotFoundException;
 import exception.CamNotSavedException;
+import exception.CamNotToggledException;
+import exception.UserNotDeletedException;
+import exception.UserNotFoundException;
+import exception.UserNotSavedException;
 import jndi.JndiFactory;
 import model.Cam;
 import model.User;
@@ -28,6 +32,7 @@ public class UserDaoImpl implements UserDao {
 		Connection connection = null;	
 		
 		final int ITERATION = 999;
+		
 		String saltValue = new BigInteger(10, new SecureRandom()).toString(5);
 		String password = user.getPassword();
 		user.setSaltValue(saltValue);
@@ -37,9 +42,7 @@ public class UserDaoImpl implements UserDao {
 			for (int i = 0; i < ITERATION; i++) {
 				password = sha256(password+saltValue);
 			}
-			
 			user.setPassword(password);
-			
 		}
 		
 		try {
@@ -64,7 +67,7 @@ public class UserDaoImpl implements UserDao {
 			pstmt.setString(1, user.getUsername());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
-			throw new CamNotSavedException();
+			throw new UserNotSavedException();
 		} finally {
 			closeConnection(connection);
 		}		
@@ -88,10 +91,10 @@ public class UserDaoImpl implements UserDao {
 				user.setPassword(rs.getString("password"));
 				return user;
 			} else {
-				throw new CamNotFoundException(id);
+				throw new UserNotFoundException(id);
 			}			
 		} catch (Exception e) {
-			throw new CamNotFoundException(id);
+			throw new UserNotFoundException(id);
 		} finally {	
 			closeConnection(connection);
 		}
@@ -99,8 +102,26 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void deleteUser(Long id) {
-		// TODO Auto-generated method stub
 		
+		Connection connection = null;	
+		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");
+			PreparedStatement pstmt;
+			if (id != null) {
+				pstmt = connection.prepareStatement("delete from \"user\" where id = ?");
+				pstmt.setLong(1, id);
+				if(pstmt.executeUpdate() == 0){
+					throw new UserNotDeletedException(id);
+				}
+			} else {
+				throw new UserNotFoundException(id);			
+			}
+		} catch (Exception e) {
+			throw new UserNotDeletedException(id);
+		} finally {
+			closeConnection(connection);
+		}	
 	}
 
 	@Override
@@ -127,7 +148,7 @@ public class UserDaoImpl implements UserDao {
 			return userList;
 			
 		} catch (Exception e) {
-			throw new CamNotFoundException();
+			throw new UserNotFoundException();
 		} finally {	
 			closeConnection(connection);
 		}
