@@ -5,7 +5,7 @@
     <title>Kamera hinzufügen</title>
   </head>
   <body>
-	<form name="edit" action="edit" method="post">
+	<form name="edit" action="camEdit" method="post">
 		<table border="1">
 			<tbody>
 				<tr>

@@ -5,10 +5,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>      
-    <title>${cam.name}</title>     
+    <title>${cam.name}</title>    
   </head>
   <body>
-  <form name="form1">
+ <form name="form1">
   <input value="${date}" id="date" name="date"><input type="button" value="aktualisieren" id="refrash">
 <select name="menu1" id="menu1">
 <option value="/">Kamera wählen</option>
@@ -17,7 +17,7 @@
 			</c:forEach>	
 
 
-</select>
+</select> 
 <script type="text/javascript">
  var urlmenu = document.getElementById( 'menu1' );
  urlmenu.onchange = function() {
@@ -29,12 +29,12 @@
  refrash.onClick = function() {
 	 window.location.href = (  '?cam=${cam.id}&date='+date.value );
  };
-</script><br>
+</script><br><
   <h1>${cam.name}</h1>	
 			<c:forEach var="picture" items="${pictures}">
 				<img src="img/${picture.path}"/>
 			</c:forEach>	
-  		
+  	
   	<br>
   </body>
 </html>
