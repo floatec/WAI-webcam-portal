@@ -82,7 +82,7 @@ public class PictureGrabber implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(11111);
+		
 		try {
 			Calendar calendar = Calendar.getInstance();
 			int day = calendar.get(Calendar.DAY_OF_WEEK); 
@@ -92,16 +92,19 @@ public class PictureGrabber implements Runnable {
 			List<Cam> collection = camDao.list();
 			System.out.println(collection.size());
 			for (Cam element : collection) {
-				File file = new File(PATH + path + element.getName()+"/");
-				file.mkdirs();
-				System.out.println(element.getName());
-				String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".jpeg";
-				Picture picture = new Picture();
-				picture.setCamId(element.getId());
-				picture.setPath(saveTo);
-				pictureDao.save(picture);
-				saveImage(element.getUrl(), 
-						PATH + saveTo);
+				if (element.isStatus()){
+					File file = new File(PATH + path + element.getName()+"/");
+					file.mkdirs();
+					System.out.println(element.getName());
+					String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".jpeg";
+					Picture picture = new Picture();
+					picture.setCamId(element.getId());
+					picture.setPath(saveTo);
+					pictureDao.save(picture);
+					saveImage(element.getUrl(), 
+							PATH + saveTo);
+				
+				}
 			}
 			
 		} catch (Exception e) {
