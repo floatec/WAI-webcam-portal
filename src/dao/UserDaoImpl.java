@@ -24,6 +24,7 @@ import model.User;
 public class UserDaoImpl implements UserDao {
 	
 	final JndiFactory jndi = JndiFactory.getInstance();
+	public static final int ITERATION = 999;
 	
 	@Override
 	public void save(User user, String[] cams) {
@@ -32,7 +33,6 @@ public class UserDaoImpl implements UserDao {
 		
 		Connection connection = null;	
 		
-		final int ITERATION = 999;
 		
 		String saltValue = new BigInteger(10, new SecureRandom()).toString(5);
 		String password = user.getPassword();
@@ -114,6 +114,34 @@ public class UserDaoImpl implements UserDao {
 			closeConnection(connection);
 		}
 	}
+	@Override
+	public User getUser(String name) {
+		if (name == null)
+			throw new IllegalArgumentException("id can not be null");
+		
+		Connection connection = null;		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");			
+			PreparedStatement pstmt = connection.prepareStatement("select * from \"user\" where username = ?");
+			pstmt.setString(1, name);
+			ResultSet rs = pstmt.executeQuery();							
+			if (rs.next()) {
+				User user = new User();
+				user.setId(rs.getLong("id"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(rs.getString("password"));
+				user.setSaltValue(rs.getString("saltvalue"));
+				return user;
+			} else {
+				System.out.println(111);
+				throw new UserNotFoundException(name);
+			}			
+		} catch (Exception e) {
+			throw new UserNotFoundException(name);
+		} finally {	
+			closeConnection(connection);
+		}
+	}
 
 	@Override
 	public void deleteUser(Long id) {
@@ -181,7 +209,7 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 	
-	private String sha256(String base) {
+	public static String sha256(String base) {
 	    try{
 	        MessageDigest digest = MessageDigest.getInstance("SHA-256");
 	        byte[] hash = digest.digest(base.getBytes("UTF-8"));
