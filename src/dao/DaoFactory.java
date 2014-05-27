@@ -25,4 +25,8 @@ public class DaoFactory {
 		return new UserDaoImpl();
 	}
 	
+	public GroupDao getGroupDao(){
+		return new GroupDaoImpl();
+	}	
+	
 }

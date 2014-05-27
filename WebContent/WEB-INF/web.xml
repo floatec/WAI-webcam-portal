@@ -21,6 +21,14 @@
     <servlet-name>PictureList</servlet-name>
     <servlet-class>servlets.PictureList</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GroupList</servlet-name>
+    <servlet-class>servlets.GroupList</servlet-class>
+  </servlet> 
+  <servlet>
+    <servlet-name>GroupEdit</servlet-name>
+    <servlet-class>servlets.GroupEdit</servlet-class>
+  </servlet>    
 
   <servlet-mapping>
     <servlet-name>CamList</servlet-name>
@@ -42,4 +50,12 @@
     <servlet-name>PictureList</servlet-name>
     <url-pattern>/pictureList</url-pattern>
   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>GroupList</servlet-name>
+    <url-pattern>/groupList</url-pattern>
+  </servlet-mapping>  
+   <servlet-mapping>
+    <servlet-name>GroupEdit</servlet-name>
+    <url-pattern>/groupEdit</url-pattern>
+  </servlet-mapping>   
 </web-app>

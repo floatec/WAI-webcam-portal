@@ -1,8 +1,9 @@
 package model;
 
 public class CamToUser {
-	private Long  userid;
+	private Long access;
 	private String name;
+	private Long camid;
 	
 	public String getName() {
 		return name;
@@ -11,13 +12,20 @@ public class CamToUser {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public Long getUserid() {
-		return userid;
-	}
-	
-	public void getUserid(Long userid) {
-		this.userid = userid;
+
+	public Long getAccess() {
+		return access;
 	}
 
+	public void setAccess(Long access) {
+		this.access = access;
+	}
+
+	public Long getCamid() {
+		return camid;
+	}
+
+	public void setCamid(Long camid) {
+		this.camid = camid;
+	}
 }
