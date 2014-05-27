@@ -139,4 +139,34 @@ public class CamDaoImpl implements CamDao  {
 		}
 	}
 	
+	@Override
+	public List<Cam> getCamsForuser(long id) {
+List<Cam> camList = new ArrayList<Cam>();
+		
+		Connection connection = null;		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");			
+			
+				PreparedStatement pstmt = connection.prepareStatement("SELECT cam.* FROM cam, camtouser WHERE  cam.id = camtouser.camid and camtouser.userid = ? order by id asc");				
+				pstmt.setLong(1,id);
+				ResultSet rs = pstmt.executeQuery();
+								
+				while (rs.next()) {
+					Cam cam = new Cam();
+					cam.setId(rs.getLong("id"));
+					cam.setName(rs.getString("name"));
+					cam.setUrl(rs.getString("url"));
+					cam.setStatus(rs.getBoolean("status"));
+					camList.add(cam);
+				}			
+			
+			return camList;
+			
+		} catch (Exception e) {
+			throw new CamNotFoundException();
+		} finally {	
+			closeConnection(connection);
+		}
+	}
+	
 }

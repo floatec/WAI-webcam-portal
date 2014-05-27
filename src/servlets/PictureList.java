@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -28,20 +30,41 @@ public class PictureList extends HttpServlet {
 	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-		long l = Long.parseLong(request.getParameter("cam").toString());
-		Cam cam = camDao.getCam(l);
-		request.setAttribute("cam", cam);
 		
-		List<Picture> collection = pictureDao.listByCam(l, request.getParameter("date").toString());
-		request.setAttribute("pictures", collection);
-		List<Cam> collectioncam = camDao.list();
+		//all cams for current user
+		List<Cam> collectioncam = camDao.getCamsForuser(1);
 		for (int i = 0; i < collectioncam.size(); i++) {
 			System.out.println( collectioncam.get(i));
 			
 		}
+		long l = collectioncam.get(0).getId();
+		if (request.getParameter("cam")!=null){
+		 l = Long.parseLong(request.getParameter("cam").toString());
+		 if (!collectioncam.contains(camDao.getCam(l))){
+			 response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			 return;
+		 }
+		}
+			
+		String date= new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		if(request.getParameter("date")!=null){
+		date = request.getParameter("date").toString();
+		}
+		Cam cam = camDao.getCam(l);
+		
+		
+		
+		// current cam
+		request.setAttribute("cam", cam);
+		
+		// pictures for current cam
+		List<Picture> collection = pictureDao.listByCam(l, date);
+		request.setAttribute("pictures", collection);
+		
+		
 		System.out.println(collectioncam.getClass().getName());
 		request.setAttribute("cams", collectioncam);
-		request.setAttribute("date", request.getParameter("date").toString());
+		request.setAttribute("date",date);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/pictureList.jsp");
 		dispatcher.forward(request, response);		
 	}
