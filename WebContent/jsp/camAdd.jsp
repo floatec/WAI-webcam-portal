@@ -3,25 +3,35 @@
 <html>
   <head>     
     <title>Kamera hinzufügen</title>
+        <!-- JQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </head>
   <body>
 	<form name="edit" action="camEdit" method="post">
-		<table border="1">
+		<table border="0">
 			<tbody>
 				<tr>
 					<td>Name:</td>
-					<td><input type="text" name="name" value=""></td>		
+					<td><input class="form-control" type="text" name="name" value=""></td>		
 				</tr>
 				<tr>		
 					<td>URL:</td>	
-					<td><input type="text" name="url" value=""></td>
+					<td><input class="form-control" type="text" name="url" value=""></td>
 				</tr>		
 				<tr>		
 					<td>Aufnahme: </td>	
-						<td><input type="checkbox" name="status" value="status" checked></td>			
+						<td><input class="checkbox" type="checkbox" name="status" value="status" checked></td>			
 				</tr>		
 				<tr>	
-					<td colspan="2"><input type="submit" name="btnSave" value="Save"></td>
+					<td colspan="2"><input  class="btn btn-success" type="submit" name="btnSave" value="Save"></td>
 				</tr>				
 			</tbody>
 		</table>
