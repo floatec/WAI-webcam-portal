@@ -48,6 +48,7 @@ width:300px;
         <li class="active"><a href="pictureList">Bilder</a></li>
         <li><a href="userList">Benutzer</a></li>
          <li><a href="camList">Kameras</a></li>
+         <li><a href="groupList">Gruppen</a></li>
       </ul>
      
       <ul class="nav navbar-nav navbar-right">
