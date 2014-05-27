@@ -26,6 +26,7 @@ public class CamList extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
+
 		List<Cam> collection = camDao.list();
 		request.setAttribute("cams", collection);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/camList.jsp");

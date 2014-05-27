@@ -35,6 +35,7 @@
         <li ><a href="pictureList">Bilder</a></li>
         <li class="active"><a href="userList">Benutzer</a></li>
          <li><a href="camList">Kameras</a></li>
+         <li><a href="groupList">Gruppen</a></li>
       </ul>
      
       <ul class="nav navbar-nav navbar-right">
