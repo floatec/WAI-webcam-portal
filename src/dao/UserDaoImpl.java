@@ -64,22 +64,23 @@ public class UserDaoImpl implements UserDao {
 					pstmt.setLong(2, user.getId());
 				}
 			}
+			
 			pstmt.setString(1, user.getUsername());
 			pstmt.executeUpdate();
 			
-			pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
-			pstmt.setLong(1, user.getId());
-			pstmt.executeUpdate();
-			
-			for (String cam : cams) {
-				Long camId = Long.parseLong(cam);
-				pstmt = connection.prepareStatement("insert into camtouser (userid, camid) values (?, ?)");
+			if(cams != null){
+				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
 				pstmt.setLong(1, user.getId());
-				pstmt.setLong(2, camId);
 				pstmt.executeUpdate();
+				
+				for (String cam : cams) {
+					Long camId = Long.parseLong(cam);
+					pstmt = connection.prepareStatement("insert into camtouser (userid, camid) values (?, ?)");
+					pstmt.setLong(1, user.getId());
+					pstmt.setLong(2, camId);
+					pstmt.executeUpdate();
+				}
 			}
-			
-			
 			
 		} catch (Exception e) {
 			throw new UserNotSavedException();
@@ -160,11 +161,19 @@ public class UserDaoImpl implements UserDao {
 			connection = jndi.getConnection("jdbc/postgres");
 			PreparedStatement pstmt;
 			if (id != null) {
+				pstmt = connection.prepareStatement("delete from usertogroup where userid = ?");
+				pstmt.setLong(1, id);
+				pstmt.executeUpdate();
+				
+				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
+				pstmt.setLong(1, id);
+				pstmt.executeUpdate();
+				
+				
 				pstmt = connection.prepareStatement("delete from \"user\" where id = ?");
 				pstmt.setLong(1, id);
-				if(pstmt.executeUpdate() == 0){
-					throw new UserNotDeletedException(id);
-				}
+				pstmt.executeUpdate();
+		
 			} else {
 				throw new UserNotFoundException(id);			
 			}

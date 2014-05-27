@@ -34,6 +34,7 @@ private static final long serialVersionUID = 1L;
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
+
 		String action = request.getParameter("action");
 		
 		if (action == null) {
@@ -88,7 +89,7 @@ private static final long serialVersionUID = 1L;
 		user.setId(id);
 		user.setUsername(username);
 		user.setPassword(password);
-
+		
 		String[] camsToUser = request.getParameterValues("cams"); 
 				
 		try {		

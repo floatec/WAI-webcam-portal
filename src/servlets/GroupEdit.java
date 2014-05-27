@@ -33,6 +33,8 @@ public class GroupEdit extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
+
+		
 		String action = request.getParameter("action");
 		
 		if (action == null) {

@@ -32,7 +32,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li ><a href="pictureList">Bilder</a></li>
-        <li class="active"><a href="userList">Benutzer</a></li>
+        <li><a href="userList">Benutzer</a></li>
          <li><a href="camList">Kameras</a></li>
          <li><a href="groupList">Gruppen</a></li>
       </ul>
