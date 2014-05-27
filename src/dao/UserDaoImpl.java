@@ -18,6 +18,7 @@ import exception.UserNotFoundException;
 import exception.UserNotSavedException;
 import jndi.JndiFactory;
 import model.Cam;
+import model.CamToUser;
 import model.User;
 
 public class UserDaoImpl implements UserDao {
@@ -182,6 +183,33 @@ public class UserDaoImpl implements UserDao {
 	    } catch(Exception ex){
 	       throw new RuntimeException(ex);
 	    }
+	}
+
+	@Override
+	public List<CamToUser> getUserCams(Long id) {
+		List<CamToUser> camList = new ArrayList<CamToUser>();
+		
+		Connection connection = null;		
+		try {
+			connection = jndi.getConnection("jdbc/postgres");			
+			
+				PreparedStatement pstmt = connection.prepareStatement("select c.name, ctu.userid from cam c left outer join camtouser ctu on ctu.camid = c.id where ctu.userid = ? or ctu.userid is null");				
+				pstmt.setLong(1, id);
+				ResultSet rs = pstmt.executeQuery();
+								
+				while (rs.next()) {
+					CamToUser camToUser = new CamToUser();
+					camToUser.setName(rs.getString("name"));
+					camToUser.getUserid(rs.getLong("userid"));
+					camList.add(camToUser);
+				}			
+			return camList;
+			
+		} catch (Exception e) {
+			throw new UserNotFoundException();
+		} finally {	
+			closeConnection(connection);
+		}
 	}
 	
 }

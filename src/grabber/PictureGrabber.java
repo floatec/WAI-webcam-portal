@@ -29,7 +29,7 @@ import model.Picture;
 
 
 public class PictureGrabber implements Runnable {
-	public static final String PATH = "/Users/floatec/Documents/workspace/WAI-webcam-portal/WebContent/img/";
+	public static final String PATH = "C:\\Users\\momo\\Documents\\WAI Projekt Kamera\\workspace\\WAI-webcam-portal\\WebContent\\img\\";
 	final CamDao camDao = DaoFactory.getInstance().getCamDao();
 	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
 	
