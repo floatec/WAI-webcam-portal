@@ -47,9 +47,6 @@ public class User {
 		for (int i = 0; i < UserDaoImpl.ITERATION; i++) {
 			password = UserDaoImpl.sha256(password+saltValue);
 		}
-		System.out.println(pwd);
-		System.out.println(password);
-		System.out.println(this.password);
 		return this.password.equals(password);
 	}
 

@@ -43,16 +43,28 @@ public class PictureList extends HttpServlet {
 			
 		}
 		if (collectioncam.size()==0){
-			 response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			RequestDispatcher requestDispatcher = request
+					.getRequestDispatcher("/jsp/noaccess.jsp");
+			requestDispatcher.forward(request, response);
 			 return;
 		 }
 		long l = collectioncam.get(0).getId();
 		if (request.getParameter("cam")!=null){
 		 l = Long.parseLong(request.getParameter("cam").toString());
-		 if (!collectioncam.contains(camDao.getCam(l))){
-			 response.sendError(HttpServletResponse.SC_FORBIDDEN);
-			 return;
-		 }
+		 try {
+			 if (!collectioncam.contains(camDao.getCam(l))){
+				 RequestDispatcher requestDispatcher = request
+							.getRequestDispatcher("/jsp/noaccess.jsp");
+					requestDispatcher.forward(request, response);
+				 return;
+			 }
+		} catch (Exception e) {
+			RequestDispatcher requestDispatcher = request
+					.getRequestDispatcher("/jsp/noaccess.jsp");
+			requestDispatcher.forward(request, response);
+		 return;
+		}
+		
 		}
 			
 		String date= new SimpleDateFormat("yyyy-MM-dd").format(new Date());
