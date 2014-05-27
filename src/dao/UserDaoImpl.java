@@ -133,7 +133,6 @@ public class UserDaoImpl implements UserDao {
 				user.setSaltValue(rs.getString("saltvalue"));
 				return user;
 			} else {
-				System.out.println(111);
 				throw new UserNotFoundException(name);
 			}			
 		} catch (Exception e) {
@@ -244,7 +243,7 @@ public class UserDaoImpl implements UserDao {
 				long actualCamId = 0;
 				long accessCamId = 0;
 				
-				// Einmal über alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
+				// Einmal ï¿½ber alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
 				while(rsAllCam.next()){		
 					CamToUser camToUser = new CamToUser();
 					actualCamId = rsAllCam.getLong("id");
