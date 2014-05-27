@@ -90,12 +90,10 @@ public class PictureGrabber implements Runnable {
 					(calendar.get(Calendar.MONTH)+1) + "/" +calendar.get(Calendar.DAY_OF_MONTH) + "/";
 			
 			List<Cam> collection = camDao.list();
-			System.out.println(collection.size());
 			for (Cam element : collection) {
 				if (element.isStatus()){
 					File file = new File(PATH + path + element.getName()+"/");
 					file.mkdirs();
-					System.out.println(element.getName());
 					String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".jpeg";
 					Picture picture = new Picture();
 					picture.setCamId(element.getId());

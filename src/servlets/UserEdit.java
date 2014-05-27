@@ -48,6 +48,8 @@ private static final long serialVersionUID = 1L;
 		}
 				
 		if(action.equals("userAdd")){
+			List<CamToUser> camList = userDao.getUserCams(id);
+			request.setAttribute("cams", camList);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/userAdd.jsp");
 			dispatcher.forward(request, response);		
 		} else if(action.equals("userEdit")) {			
