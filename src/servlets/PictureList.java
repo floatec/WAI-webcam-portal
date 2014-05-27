@@ -35,7 +35,7 @@ public class PictureList extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
-		System.out.println(SessionHelper.currentUser(request).getUsername());
+		
 		//all cams for current user
 		List<Cam> collectioncam = camDao.getCamsForuser(SessionHelper.currentUser(request).getId());
 		for (int i = 0; i < collectioncam.size(); i++) {
@@ -73,15 +73,12 @@ public class PictureList extends HttpServlet {
 		}
 		Cam cam = camDao.getCam(l);
 		
-		
-		
 		// current cam
 		request.setAttribute("cam", cam);
 		
 		// pictures for current cam
 		List<Picture> collection = pictureDao.listByCam(l, date);
 		request.setAttribute("pictures", collection);
-		
 		
 		System.out.println(collectioncam.getClass().getName());
 		request.setAttribute("cams", collectioncam);

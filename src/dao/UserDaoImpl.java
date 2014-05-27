@@ -139,6 +139,8 @@ public class UserDaoImpl implements UserDao {
 				rs = pstmt.executeQuery();
 				if(rs.next()){
 					user.setGroup(rs.getString("name"));
+				}else{
+					user.setGroup("user");
 				}
 				
 				return user;

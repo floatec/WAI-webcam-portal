@@ -28,7 +28,12 @@ public class UserList extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
-
+		if(!SessionHelper.currentUser(request).getGroup().equals("admin") && !SessionHelper.currentUser(request).getGroup().equals("schichtleiter") ){
+			RequestDispatcher requestDispatcher = request
+					.getRequestDispatcher("/jsp/noaccess.jsp");
+			requestDispatcher.forward(request, response);
+			 return;
+		}
 		User ses = SessionHelper.currentUser(request);
 		System.out.println(ses.getGroup());
 		System.out.println(ses.getUsername());
