@@ -6,7 +6,7 @@ import model.CamToUser;
 import model.User;
 
 public interface UserDao {
-		public void save(User user);
+		public void save(User user, String[] cams);
 		public User getUser(Long id);
 		public void deleteUser(Long id);
 		public List<User> list();

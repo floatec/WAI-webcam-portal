@@ -34,9 +34,9 @@
 				<tr>	
 					<td></td>
 					<td>
-						<select name="cars" multiple>
+						<select name="cams" multiple>
 							<c:forEach var="cam" items="${cams}">			
-					 			<option <c:if test="${cam.userid!=0}">selected</c:if> value="${cam.name}">
+					 			<option <c:if test="${cam.access!=0}">selected</c:if> value="${cam.camid}">
 					 				<c:out value="${cam.name}" />
 					 			</option>
 							</c:forEach>
@@ -44,7 +44,6 @@
 					</td>
 				</tr>	
 				<tr>
-					<td colspan="2"><input type="submit" name="btnSave" value="Save"></td>
 					<td>&nbsp;</td><td colspan="1"><input class="btn btn-success" type="submit" name="btnSave" value="Save"></td>
 				</tr>			
 			</tbody>
