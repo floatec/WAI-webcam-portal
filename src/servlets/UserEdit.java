@@ -85,9 +85,10 @@ private static final long serialVersionUID = 1L;
 		user.setUsername(username);
 		user.setPassword(password);
 
+		String[] camsToUser = request.getParameterValues("cams"); 
 				
 		try {		
-			userDao.save(user);
+			userDao.save(user, camsToUser);
 			response.sendRedirect(request.getContextPath() + "/userList");
 		}  catch (CamNotSavedException e) {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
