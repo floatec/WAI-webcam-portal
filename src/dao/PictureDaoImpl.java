@@ -78,7 +78,7 @@ public class PictureDaoImpl implements PictureDao {
 			pstmt.setString(3,date +" 23:59:59" );
 			
 			ResultSet rs = pstmt.executeQuery();
-
+			
 			while (rs.next()) {
 				Picture picutre = new Picture();
 				picutre.setId(rs.getLong("id"));
@@ -91,7 +91,6 @@ public class PictureDaoImpl implements PictureDao {
 			return pictureList;
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			throw new CamNotFoundException();
 		} finally {
 			closeConnection(connection);
