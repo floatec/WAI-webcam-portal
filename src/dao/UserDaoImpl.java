@@ -104,6 +104,7 @@ public class UserDaoImpl implements UserDao {
 				user.setId(rs.getLong("id"));
 				user.setUsername(rs.getString("username"));
 				user.setPassword(rs.getString("password"));
+				
 				return user;
 			} else {
 				throw new UserNotFoundException(id);
@@ -131,6 +132,14 @@ public class UserDaoImpl implements UserDao {
 				user.setUsername(rs.getString("username"));
 				user.setPassword(rs.getString("password"));
 				user.setSaltValue(rs.getString("saltvalue"));
+				
+				pstmt = connection.prepareStatement("select g.name from usertogroup utg join \"group\" g on g.id = utg.groupid where userid = ?");
+				pstmt.setLong(1, user.getId());
+				rs = pstmt.executeQuery();
+				if(rs.next()){
+					user.setGroup(rs.getString("name"));
+				}
+				
 				return user;
 			} else {
 				throw new UserNotFoundException(name);

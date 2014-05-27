@@ -8,6 +8,7 @@ public class User {
 	private String username;
 	private String password;
 	private String saltValue;
+	private String group;
 	
 	public Long getId() {
 		return id;
@@ -50,5 +51,13 @@ public class User {
 		System.out.println(password);
 		System.out.println(this.password);
 		return this.password.equals(password);
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 }
