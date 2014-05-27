@@ -4,7 +4,7 @@
 
 CREATE TABLE cam
 (
-  id integer NOT NULL DEFAULT nextval('cams_id_seq'::regclass),
+  id serial NOT NULL,
   name character varying(50),
   url character varying(127),
   status character varying(1),
@@ -18,11 +18,11 @@ ALTER TABLE cam
 
   -- Table: picture
 
--- DROP TABLE picture;
+  -- DROP TABLE picture;
 
 CREATE TABLE picture
 (
-  id integer NOT NULL DEFAULT nextval('pictures_id_seq'::regclass),
+  id serial NOT NULL,
   "time" timestamp without time zone DEFAULT now(),
   path character varying(127),
   cam_id integer,
@@ -45,7 +45,7 @@ CREATE TABLE "user"
 (
   id serial NOT NULL,
   username character varying(20) NOT NULL,
-  password character varying(20) NOT NULL,
+  password character varying(255) NOT NULL,
   saltvalue character varying(5) NOT NULL,
   CONSTRAINT user_pkey PRIMARY KEY (id)
 )

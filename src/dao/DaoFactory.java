@@ -16,4 +16,13 @@ public class DaoFactory {
 	public CamDao getCamDao() {
 		return new CamDaoImpl();
 	}
+	
+	public PictureDao getPictureDao() {
+		return new PictureDaoImpl();
+	}
+	
+	public UserDao getUserDao(){
+		return new UserDaoImpl();
+	}
+	
 }
