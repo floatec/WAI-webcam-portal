@@ -10,16 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import exception.CamNotFoundException;
-import exception.CamNotSavedException;
-import exception.CamNotToggledException;
+
 import exception.UserNotDeletedException;
 import exception.UserNotFoundException;
 import exception.UserNotSavedException;
 import jndi.JndiFactory;
-import model.Cam;
 import model.CamToUser;
-import model.Group;
 import model.User;
 
 public class UserDaoImpl implements UserDao {
@@ -66,7 +62,6 @@ public class UserDaoImpl implements UserDao {
 				}
 			}
 			
-<<<<<<< HEAD
 			if (user.getId() != null) {
 			
 				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
@@ -81,10 +76,9 @@ public class UserDaoImpl implements UserDao {
 					user.setId(rs.getLong("id"));
 				}
 			}
-=======
 			pstmt.setString(1, user.getUsername());
 			pstmt.executeUpdate();
->>>>>>> abe4afd7f32cc6a48543d2c05dbdd3e46631e8d8
+
 			
 			if(cams != null){
 				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
