@@ -17,7 +17,7 @@
     <title>Kameras</title>     
   </head>
   <body>
-  	<a href="camEdit?action=camAdd">+ Neue Kamera hizufügen</a>
+  	<a class="btn btn-default" href="camEdit?action=camAdd">+ Neue Kamera hizufügen</a>
   	<br />
   	<br />
   	<table class="table">
@@ -33,12 +33,12 @@
 					<td><c:out value="${cam.name}"/></td>
 					<td><c:out value="${cam.url}"/></td>
 					<td>
-						<a  href="camEdit?action=toggleStatus&id=${cam.id}&status=${cam.status}">
+						<a class="btn btn-default" href="camEdit?action=toggleStatus&id=${cam.id}&status=${cam.status}">
 							<c:if test="${cam.status}">Aktiv</c:if>
 							<c:if test="${!cam.status}">Inaktiv</c:if>
 						</a>	
 					</td>
-					<td><a href="camEdit?action=camEdit&id=${cam.id}">Bearbeiten</a></td>
+					<td><a class="btn btn-default" href="camEdit?action=camEdit&id=${cam.id}">Bearbeiten</a></td>
 				</tr>
 			</c:forEach>	
   		</tbody>

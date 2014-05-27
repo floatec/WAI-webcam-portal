@@ -17,7 +17,7 @@
     <title>Benutzer</title>     
   </head>
   <body>
-  	<a href="userEdit?action=userAdd">+ Neuen Benutzer hizufügen</a>
+  	<a class="btn btn-default" href="userEdit?action=userAdd">+ Neuen Benutzer hizufügen</a>
   	<br />
   	<br />
   	<table class="table">
@@ -30,8 +30,8 @@
 				<tr>			
 					<td><c:out value="${user.username}"/></td>
 					<td>
-						<a href="userEdit?action=userEdit&id=${user.id}">Bearbeiten</a>
-						<a href="userEdit?action=userDelete&id=${user.id}">Löschen</a>
+						<a class="btn btn-default" href="userEdit?action=userEdit&id=${user.id}">Bearbeiten</a>
+						<a class="btn btn-default" href="userEdit?action=userDelete&id=${user.id}">Löschen</a>
 					</td>
 				</tr>
 			</c:forEach>	
