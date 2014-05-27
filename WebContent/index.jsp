@@ -10,5 +10,6 @@
   	<a href="camList"> CamList</a><br />
   	<a href="userList"> userList</a><br />
   	<a href="pictureList"> picturelist</a><br />
+  	<a href="groupList"> GroupList</a><br />
   </body>
 </html>

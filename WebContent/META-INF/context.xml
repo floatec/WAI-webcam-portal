@@ -5,7 +5,7 @@
 			  driverClassName="org.postgresql.Driver"
 		      url="jdbc:postgresql://127.0.0.1/postgres"
     		  username="postgres"
-    		  password="imb"
+    		  password="1234"
     		  maxActive="250" maxIdle="5"
     		  
 	/>
