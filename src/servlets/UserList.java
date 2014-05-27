@@ -1,5 +1,7 @@
 package servlets;
 
+import helper.SessionHelper;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class UserList extends HttpServlet {
 	final UserDao userDao = DaoFactory.getInstance().getUserDao();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+		if(!SessionHelper.checklogin(request, response)){
+			return;
+		}
 		List<User> collection = userDao.list();
 		request.setAttribute("users", collection);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/userList.jsp");

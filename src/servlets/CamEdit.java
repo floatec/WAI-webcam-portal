@@ -3,6 +3,8 @@
  */
 package servlets;
 
+import helper.SessionHelper;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -25,7 +27,9 @@ public class CamEdit extends HttpServlet {
 	final CamDao camDao = DaoFactory.getInstance().getCamDao();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		if(!SessionHelper.checklogin(request, response)){
+			return;
+		}
 		String action = request.getParameter("action");
 		
 		if (action == null) {
