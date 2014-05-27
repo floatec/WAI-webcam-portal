@@ -3,21 +3,31 @@
 <html>
   <head>     
     <title>Kamera hinzufügen</title>
+    <!-- JQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </head>
   <body>
 	<form name="edit" action="userEdit" method="post">
-		<table border="1">
+		<table border="0">
 			<tbody>
 				<tr>
 					<td>Username:</td>
-					<td><input type="text" name="username" value="" required></td>		
+					<td><input class="form-control" type="text" name="username" value="" required></td>		
 				</tr>
 				<tr>		
-					<td>Passwort</td>	
-					<td><input type="password" name="password" value="" required></td>
+					<td>Passwort:</td>	
+					<td><input class="form-control" type="password" name="password" value="" required></td>
 				</tr>			
 				<tr>	
-					<td colspan="2"><input type="submit" name="btnSave" value="Save"></td>
+					<td colspan="2"><input  class="btn btn-success" type="submit" name="btnSave" value="Save"></td>
 				</tr>				
 			</tbody>
 		</table>
