@@ -30,18 +30,28 @@ public class LoginCheck extends HttpServlet {
 
 		String loginName = request.getParameter("loginName");
 		String password = request.getParameter("password");
-		User curUser= userDao.getUser(loginName);
-		if (curUser.isPasswordEqual(password) ||request.getSession().getAttribute("user")!=null ) {
-			request.getSession().setAttribute("user", curUser);
-			response.setStatus( 302 );
-			response.sendRedirect( "pictureList");
-		} else {
-			out.println("Das Passwort ist falsch. Bitte versuche es erneut<br />");
+		
+		try {
+			User curUser= userDao.getUser(loginName);
+			if (curUser.isPasswordEqual(password) ||request.getSession().getAttribute("user")!=null ) {
+				request.getSession().setAttribute("user", curUser);
+				response.setStatus( 302 );
+				response.sendRedirect( "pictureList");
+			} else {
+				out.println("Das Passwort ist falsch. Bitte versuche es erneut<br />");
+				out.println("<a href='Login.jsp'>Hier</a> geht es zur�ck zur Eingabemaske!");
+				RequestDispatcher requestDispatcher = request
+						.getRequestDispatcher("/jsp/Login.jsp");
+				requestDispatcher.forward(request, response);
+			}
+		} catch (Exception e) {
+			out.println("Der Bentzername ist falsch. Bitte versuche es erneut<br />");
 			out.println("<a href='Login.jsp'>Hier</a> geht es zur�ck zur Eingabemaske!");
 			RequestDispatcher requestDispatcher = request
 					.getRequestDispatcher("/jsp/Login.jsp");
 			requestDispatcher.forward(request, response);
 		}
+		
 
 	}
 
