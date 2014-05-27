@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Cam;
+import model.CamToUser;
 import model.User;
+import dao.CamDao;
 import dao.DaoFactory;
 import dao.UserDao;
 import exception.CamNotFoundException;
@@ -45,7 +49,9 @@ private static final long serialVersionUID = 1L;
 		} else if(action.equals("userEdit")) {			
 			try {
 				User user = userDao.getUser(id);
+				List<CamToUser> camList = userDao.getUserCams(id);
 				request.setAttribute("user", user);
+				request.setAttribute("cams", camList);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/userEdit.jsp");
 				dispatcher.forward(request, response);
 			} catch (CamNotFoundException e) {
