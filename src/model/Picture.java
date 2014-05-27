@@ -22,9 +22,10 @@ public class Picture {
 	}
 
 	public String getPathSmall() {
+		//return path;
 		return  path.
-	    	     substring(0,path.lastIndexOf(File.separator))
-                + "/small" + path.substring(path.lastIndexOf(File.separator));
+	    	     substring(0,path.lastIndexOf('/'))
+                +'/'+ "small" + path.substring(path.lastIndexOf('/'));
 	}
 	
 	public String getTimestamp() {
