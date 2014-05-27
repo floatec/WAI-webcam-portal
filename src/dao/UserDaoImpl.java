@@ -62,23 +62,16 @@ public class UserDaoImpl implements UserDao {
 				}
 			}
 			
-			if (user.getId() != null) {
+			pstmt.setString(1, user.getUsername());
+			pstmt.executeUpdate();
 			
-				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
-				pstmt.setLong(1, user.getId());
-				pstmt.executeUpdate();
-				
-			} else {
-				
+			if (user.getId() == null) {
 				pstmt = connection.prepareStatement("select max(id) as id from \"user\"");
 				ResultSet rs = pstmt.executeQuery();
 				while (rs.next()) {
 					user.setId(rs.getLong("id"));
 				}
 			}
-			pstmt.setString(1, user.getUsername());
-			pstmt.executeUpdate();
-
 			
 			if(cams != null){
 				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
