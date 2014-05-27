@@ -4,6 +4,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,9 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.GroupDao;
 import dao.DaoFactory;
+import exception.CamNotSavedException;
 import exception.GroupNotFoundException;
 import exception.GroupNotSavedException;
+import model.CamToUser;
 import model.Group;
+import model.UserInGroup;
 
 public class GroupEdit extends HttpServlet {	
 	
@@ -37,11 +41,11 @@ public class GroupEdit extends HttpServlet {
 		if (request.getParameter("id") != null) {
 			id = Long.valueOf(request.getParameter("id"));
 		}
-				
-		if(action.equals("groupEdit")){
 			
-			Group group = new Group();
-			groupDao.listUserInGroup(id);
+		if(action.equals("groupEdit")){
+			List<UserInGroup> groupList = groupDao.listUserInGroup(id);
+			request.setAttribute("groups", groupList);
+			request.setAttribute("group", id);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/groupEdit.jsp");
 			dispatcher.forward(request, response);		
 		}
@@ -55,9 +59,14 @@ public class GroupEdit extends HttpServlet {
 			id = Long.valueOf(request.getParameter("id"));
 		}
 		
-		String name = request.getParameter("name");
-		String url = request.getParameter("url");
-		String status = request.getParameter("status");
+		String[] usersInGroup = request.getParameterValues("users"); 
 			
+		try {		
+			groupDao.saveUsersToGroup(id, usersInGroup);
+			response.sendRedirect(request.getContextPath() + "/groupList");
+		}  catch (CamNotSavedException e) {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 }

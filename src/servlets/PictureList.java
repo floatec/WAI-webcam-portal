@@ -1,5 +1,7 @@
 package servlets;
 
+import helper.SessionHelper;
+
 import java.io.IOException;
 
 import java.text.SimpleDateFormat;
@@ -30,13 +32,20 @@ public class PictureList extends HttpServlet {
 	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-		
+		if(!SessionHelper.checklogin(request, response)){
+			return;
+		}
+		System.out.println(SessionHelper.currentUser(request).getUsername());
 		//all cams for current user
-		List<Cam> collectioncam = camDao.getCamsForuser(1);
+		List<Cam> collectioncam = camDao.getCamsForuser(SessionHelper.currentUser(request).getId());
 		for (int i = 0; i < collectioncam.size(); i++) {
 			System.out.println( collectioncam.get(i));
 			
 		}
+		if (collectioncam.size()==0){
+			 response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			 return;
+		 }
 		long l = collectioncam.get(0).getId();
 		if (request.getParameter("cam")!=null){
 		 l = Long.parseLong(request.getParameter("cam").toString());

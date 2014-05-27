@@ -1,5 +1,8 @@
 package model;
 
+import dao.UserDao;
+import dao.UserDaoImpl;
+
 public class User {
 	private Long id;
 	private String username;
@@ -36,5 +39,16 @@ public class User {
 	
 	public void setSaltValue(String saltValue) {
 		this.saltValue = saltValue;
+	}
+	
+	public boolean isPasswordEqual(String pwd){
+		String password = pwd;
+		for (int i = 0; i < UserDaoImpl.ITERATION; i++) {
+			password = UserDaoImpl.sha256(password+saltValue);
+		}
+		System.out.println(pwd);
+		System.out.println(password);
+		System.out.println(this.password);
+		return this.password.equals(password);
 	}
 }

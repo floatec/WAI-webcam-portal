@@ -10,7 +10,9 @@ import java.util.List;
 import exception.GroupNotFoundException;
 import exception.GroupNotSavedException;
 import exception.GroupNotDeletedException;
+import exception.UserNotFoundException;
 import jndi.JndiFactory;
+import model.CamToUser;
 import model.User;
 import model.UserInGroup;
 import model.Group;
@@ -20,7 +22,7 @@ public class GroupDaoImpl implements GroupDao  {
 	final JndiFactory jndi = JndiFactory.getInstance();
 	
 	@Override
-	public void saveUsersToGroup(Group group, List<User> userList) {
+	public void saveUsersToGroup(Long group, String[] userList) {
 		if (group == null)
 			throw new IllegalArgumentException("group can not be null");
 		
@@ -29,16 +31,16 @@ public class GroupDaoImpl implements GroupDao  {
 			connection = jndi.getConnection("jdbc/postgres");
 			PreparedStatement pstmt;
 			pstmt = connection.prepareStatement("delete from usertogroup where groupid = ?");
-			pstmt.setLong(1, group.getId());
-			if(pstmt.executeUpdate() == 0){
-				throw new GroupNotDeletedException(group.getId());
-			}
-			for (int i = 0; i < userList.size(); i++){			
-				pstmt = connection.prepareStatement("insert into usertogroup(groupid, userid) values ( ?, ?);");
-				pstmt.setLong(1, group.getId());
-				pstmt.setLong(2, userList.get(i).getId());
+			pstmt.setLong(1, group);
+			pstmt.executeUpdate();
+			
+			for (String user : userList) {
+				Long userID = Long.parseLong(user);
+				pstmt = connection.prepareStatement("insert into usertogroup (userid, groupid) values (?, ?)");
+				pstmt.setLong(1, userID);
+				pstmt.setLong(2, group);
 				pstmt.executeUpdate();
-			}	
+			}
 		} catch (Exception e) {
 			throw new GroupNotSavedException();
 		} finally {
@@ -77,32 +79,39 @@ public class GroupDaoImpl implements GroupDao  {
 	@Override
 	public List<UserInGroup> listUserInGroup( Long id ) {
 		
-		List<UserInGroup> userInGroupList = new ArrayList<UserInGroup>();
-		
+		List<UserInGroup> groupList = new ArrayList<UserInGroup>();
 		Connection connection = null;		
 		try {
 			connection = jndi.getConnection("jdbc/postgres");			
-			
-				PreparedStatement pstmt = connection.prepareStatement("select u.username, utg.userid from \"user\" u left outer join usertogroup utg on utg.userid = u.id where utg.groupid = ? or utg.groupid is null order by utg.userid asc");	
-				pstmt.setLong(1, id);
-				ResultSet rs = pstmt.executeQuery();
-								
-				while (rs.next()) {
+
+				PreparedStatement pstmtAllUser = connection.prepareStatement("select id, username from \"user\" ");
+				ResultSet rsAllUser = pstmtAllUser.executeQuery();
+				
+				PreparedStatement pstmtGroupsUsers = connection.prepareStatement("select u.username, u.id from \"user\" u join usertogroup utg on utg.userid = u.id where utg.groupid = ?");				
+				pstmtGroupsUsers.setLong(1, id);
+				long access = 0;
+				long actualGroupId = 0;
+				long accessGroupId = 0;
+
+				while(rsAllUser.next()){		
 					UserInGroup userInGroup = new UserInGroup();
-					userInGroup.setUserName(rs.getString("name"));
-					Long groupId = rs.getLong("groupid");
-					if ( groupId == null){
-						userInGroup.setInGroup(false);			
-					} else {
-						userInGroup.setInGroup(true);						
-					}
-					userInGroupList.add(userInGroup);
-				}			
-			
-			return userInGroupList;
-			
+					actualGroupId = rsAllUser.getLong("id");
+					ResultSet rsGroupsUsers= pstmtGroupsUsers.executeQuery();
+					while (rsGroupsUsers.next()) {
+						accessGroupId = rsGroupsUsers.getLong("id");
+						if(accessGroupId == actualGroupId){
+							access = 1;
+						}
+					}		
+					userInGroup.setName(rsAllUser.getString("username"));
+					userInGroup.setAccess(access);
+					userInGroup.setUserid(rsAllUser.getLong("id"));
+					groupList.add(userInGroup);
+					access = 0;
+				}				
+			return groupList;			
 		} catch (Exception e) {
-			throw new GroupNotFoundException();
+			throw new UserNotFoundException();
 		} finally {	
 			closeConnection(connection);
 		}
