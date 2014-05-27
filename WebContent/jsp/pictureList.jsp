@@ -20,6 +20,13 @@
 <!--  datepicker -->
 <script src="js/bootstrap-datepicker.js"></script>
 <link rel="stylesheet" href="css/datepicker.css">
+<style type="text/css">
+.form-control {
+width:300px;
+   display: inline-block;
+    
+}
+</style>
   </head>
   <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -50,8 +57,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-    
- <form name="form1">
+ <div style="text-align:center">   
  <input type="text" type="text" class="form-control" id="datepick" value="${date}" onchange="">
  
 
@@ -80,11 +86,12 @@
 	    format: "yyyy-mm-dd"
 	}).on('changeDate', loadDate);
 </script><br>
-  <h1>${cam.name}</h1>	
+	
+	  <h1>${cam.name}</h1>
 			<c:forEach var="picture" items="${pictures}">
 				<a href="img/${picture.path}" target="_BLANK"><img src="img/${picture.getPathSmall()}"/></a>
 			</c:forEach>	
-  	
+  	</div>
   	<br>
   </body>
 </html>
