@@ -11,9 +11,6 @@
 		<p> User die zur Gruppe hinzugefügt werden sollen bitte auswählen<br>Für Mehrfachauswahl strg gedrückt halten... <p>
 		<select multiple>
 		  <option value="$">Volvo</option>
-		  <option value="saab">Saab</option>
-		  <option value="opel">Opel</option>
-		  <option value="audi">Audi</option>
 		</select> 
 		<input type="hidden" name="id" value="${group.id}">
 	</form>

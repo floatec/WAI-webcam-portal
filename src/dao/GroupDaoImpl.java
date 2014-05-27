@@ -10,7 +10,9 @@ import java.util.List;
 import exception.GroupNotFoundException;
 import exception.GroupNotSavedException;
 import exception.GroupNotDeletedException;
+import exception.UserNotFoundException;
 import jndi.JndiFactory;
+import model.CamToUser;
 import model.User;
 import model.UserInGroup;
 import model.Group;
@@ -77,32 +79,41 @@ public class GroupDaoImpl implements GroupDao  {
 	@Override
 	public List<UserInGroup> listUserInGroup( Long id ) {
 		
-		List<UserInGroup> userInGroupList = new ArrayList<UserInGroup>();
-		
+		List<CamToUser> camList = new ArrayList<CamToUser>();
 		Connection connection = null;		
 		try {
 			connection = jndi.getConnection("jdbc/postgres");			
-			
-				PreparedStatement pstmt = connection.prepareStatement("select u.username, utg.userid from \"user\" u left outer join usertogroup utg on utg.userid = u.id where utg.groupid = ? or utg.groupid is null order by utg.userid asc");	
-				pstmt.setLong(1, id);
-				ResultSet rs = pstmt.executeQuery();
-								
-				while (rs.next()) {
-					UserInGroup userInGroup = new UserInGroup();
-					userInGroup.setUserName(rs.getString("name"));
-					Long groupId = rs.getLong("groupid");
-					if ( groupId == null){
-						userInGroup.setInGroup(false);			
-					} else {
-						userInGroup.setInGroup(true);						
-					}
-					userInGroupList.add(userInGroup);
-				}			
-			
-			return userInGroupList;
-			
+				//Alle Cams
+				PreparedStatement pstmtAllCam = connection.prepareStatement("select id, name from cam");
+				ResultSet rsAllCam = pstmtAllCam.executeQuery();
+				
+				//CamsForUser
+				PreparedStatement pstmtUserCams = connection.prepareStatement("select c.name, c.id from cam c join camtouser ctu on ctu.camid = c.id where ctu.userid = ?");				
+				pstmtUserCams.setLong(1, id);
+				long access = 0;
+				long actualCamId = 0;
+				long accessCamId = 0;
+				
+				// Einmal über alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
+				while(rsAllCam.next()){		
+					CamToUser camToUser = new CamToUser();
+					actualCamId = rsAllCam.getLong("id");
+					ResultSet rsUserCams = pstmtUserCams.executeQuery();
+					while (rsUserCams.next()) {
+						accessCamId = rsUserCams.getLong("id");
+						if(accessCamId == actualCamId){
+							access = 1;
+						}
+					}		
+					camToUser.setName(rsAllCam.getString("name"));
+					camToUser.setAccess(access);
+					camToUser.setCamid(rsAllCam.getLong("id"));
+					camList.add(camToUser);
+					access = 0;
+				}				
+			return camList;			
 		} catch (Exception e) {
-			throw new GroupNotFoundException();
+			throw new UserNotFoundException();
 		} finally {	
 			closeConnection(connection);
 		}
