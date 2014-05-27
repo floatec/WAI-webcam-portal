@@ -5,6 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login</title>
+<!-- JQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>    
 </head>
 <body>
  
@@ -13,11 +23,10 @@
  
 <form method="post" name="Login" action="LoginCheck">
 Benutzername<br />
-<input type="text" name="loginName" /><br />
+<input class="form-control" type="text" name="loginName" /><br />
 Passwort<br />
-<input type="password" name="password" /><br />
-<input type="submit" value="login" />
-<input type="reset" value="reset" />
+<input class="form-control" type="password" name="password" /><br />
+<input class="btn btn-success" type="submit" value="login" />
 </form>
  
 </body>
