@@ -1,6 +1,9 @@
 package grabber;
 
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,6 +21,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
 
 import dao.CamDao;
 import dao.DaoFactory;
@@ -44,7 +49,30 @@ public class PictureGrabber implements Runnable {
 		while ((length = is.read(b)) != -1) {
 			os.write(b, 0, length);
 		}
+		File file = new File(destinationFile);
+        
+            try {
+                BufferedImage img = ImageIO.read(file);
 
+                AffineTransform transform = AffineTransform
+                        .getScaleInstance(0.5, 0.5);
+                AffineTransformOp op = new AffineTransformOp(transform,
+                        null);
+               
+                BufferedImage scaledImage = op.filter(img, null);
+                File smallFile = new File( file
+                        .getAbsolutePath().
+       	    	     substring(0,file
+                             .getAbsolutePath().lastIndexOf(File.separator))
+                        
+                        + "/small/" + file.getName());
+                smallFile.mkdirs();
+                ImageIO.write(scaledImage, "jpeg", smallFile);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        
 		is.close();
 		os.close();
 	}
@@ -67,7 +95,7 @@ public class PictureGrabber implements Runnable {
 				File file = new File(PATH + path + element.getName()+"/");
 				file.mkdirs();
 				System.out.println(element.getName());
-				String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".png";
+				String saveTo = path + element.getName() + "/" + calendar.getTimeInMillis()+".jpeg";
 				Picture picture = new Picture();
 				picture.setCamId(element.getId());
 				picture.setPath(saveTo);

@@ -28,10 +28,10 @@ public class PictureList extends HttpServlet {
 	final PictureDao pictureDao = DaoFactory.getInstance().getPictureDao();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-	
-		Cam cam = camDao.getCam(1l);
-		request.setAttribute("cam", cam);
 		long l = Long.parseLong(request.getParameter("cam").toString());
+		Cam cam = camDao.getCam(l);
+		request.setAttribute("cam", cam);
+		
 		List<Picture> collection = pictureDao.listByCam(l, request.getParameter("date").toString());
 		request.setAttribute("pictures", collection);
 		List<Cam> collectioncam = camDao.list();

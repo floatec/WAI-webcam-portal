@@ -1,0 +1,14 @@
+<br />
+<b>Warning</b>:  file_get_contents(../webcams/kombi/kvv/Marktplatz_Lamm/webcambild_640.jpg) [<a href='function.file-get-contents'>function.file-get-contents</a>]: failed to open stream: No such file or directory in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>68</b><br />
+<br />
+<b>Warning</b>:  imagecreatefromjpeg() [<a href='function.imagecreatefromjpeg'>function.imagecreatefromjpeg</a>]: gd-jpeg: JPEG library reports unrecoverable error:  in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>83</b><br />
+<br />
+<b>Warning</b>:  imagecreatefromjpeg() [<a href='function.imagecreatefromjpeg'>function.imagecreatefromjpeg</a>]: './daten/lammstrasse.jpg' is not a valid JPEG file in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>83</b><br />
+<br />
+<b>Warning</b>:  imagecopyresampled(): supplied argument is not a valid Image resource in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>85</b><br />
+<br />
+<b>Warning</b>:  imagecopyresampled(): supplied argument is not a valid Image resource in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>89</b><br />
+<br />
+<b>Warning</b>:  imagedestroy(): supplied argument is not a valid Image resource in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>98</b><br />
+<br />
+<b>Warning</b>:  Cannot modify header information - headers already sent by (output started at /homepages/31/d11837357/htdocs/service/includes/webcam.inc:68) in <b>/homepages/31/d11837357/htdocs/service/includes/webcam.inc</b> on line <b>105</b><br />
