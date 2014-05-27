@@ -7,7 +7,7 @@ import model.User;
 import model.UserInGroup;
 
 public interface GroupDao {
-	public void saveUsersToGroup(Group group,  List<User> userList);
+	public void saveUsersToGroup(Long group,  String[] userList);
 	public List<Group> list();
 	public List<UserInGroup> listUserInGroup(Long id);
 }

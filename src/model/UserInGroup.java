@@ -4,7 +4,7 @@ public class UserInGroup {
 
 	private Long access;
 	private String name;
-	private Long groupid;
+	private Long userid;
 	
 	public String getName() {
 		return name;
@@ -18,13 +18,10 @@ public class UserInGroup {
 	public void setAccess(Long access) {
 		this.access = access;
 	}
-	public Long getGroupid() {
-		return groupid;
+	public Long getUserid() {
+		return userid;
 	}
-	public void setGroupid(Long groupid) {
-		this.groupid = groupid;
+	public void setUserid(Long userid) {
+		this.userid = userid;
 	}
-
-
-	
 }

@@ -22,7 +22,7 @@ public class GroupDaoImpl implements GroupDao  {
 	final JndiFactory jndi = JndiFactory.getInstance();
 	
 	@Override
-	public void saveUsersToGroup(Group group, List<User> userList) {
+	public void saveUsersToGroup(Long group, String[] userList) {
 		if (group == null)
 			throw new IllegalArgumentException("group can not be null");
 		
@@ -31,16 +31,16 @@ public class GroupDaoImpl implements GroupDao  {
 			connection = jndi.getConnection("jdbc/postgres");
 			PreparedStatement pstmt;
 			pstmt = connection.prepareStatement("delete from usertogroup where groupid = ?");
-			pstmt.setLong(1, group.getId());
-			if(pstmt.executeUpdate() == 0){
-				throw new GroupNotDeletedException(group.getId());
-			}
-			for (int i = 0; i < userList.size(); i++){			
-				pstmt = connection.prepareStatement("insert into usertogroup(groupid, userid) values ( ?, ?);");
-				pstmt.setLong(1, group.getId());
-				pstmt.setLong(2, userList.get(i).getId());
+			pstmt.setLong(1, group);
+			pstmt.executeUpdate();
+			
+			for (String user : userList) {
+				Long userID = Long.parseLong(user);
+				pstmt = connection.prepareStatement("insert into usertogroup (userid, groupid) values (?, ?)");
+				pstmt.setLong(1, userID);
+				pstmt.setLong(2, group);
 				pstmt.executeUpdate();
-			}	
+			}
 		} catch (Exception e) {
 			throw new GroupNotSavedException();
 		} finally {
@@ -79,39 +79,37 @@ public class GroupDaoImpl implements GroupDao  {
 	@Override
 	public List<UserInGroup> listUserInGroup( Long id ) {
 		
-		List<CamToUser> camList = new ArrayList<CamToUser>();
+		List<UserInGroup> groupList = new ArrayList<UserInGroup>();
 		Connection connection = null;		
 		try {
 			connection = jndi.getConnection("jdbc/postgres");			
-				//Alle Cams
-				PreparedStatement pstmtAllCam = connection.prepareStatement("select id, name from cam");
-				ResultSet rsAllCam = pstmtAllCam.executeQuery();
+
+				PreparedStatement pstmtAllUser = connection.prepareStatement("select id, username from \"user\" ");
+				ResultSet rsAllUser = pstmtAllUser.executeQuery();
 				
-				//CamsForUser
-				PreparedStatement pstmtUserCams = connection.prepareStatement("select c.name, c.id from cam c join camtouser ctu on ctu.camid = c.id where ctu.userid = ?");				
-				pstmtUserCams.setLong(1, id);
+				PreparedStatement pstmtGroupsUsers = connection.prepareStatement("select u.username, u.id from \"user\" u join usertogroup utg on utg.userid = u.id where utg.groupid = ?");				
+				pstmtGroupsUsers.setLong(1, id);
 				long access = 0;
-				long actualCamId = 0;
-				long accessCamId = 0;
-				
-				// Einmal über alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
-				while(rsAllCam.next()){		
-					CamToUser camToUser = new CamToUser();
-					actualCamId = rsAllCam.getLong("id");
-					ResultSet rsUserCams = pstmtUserCams.executeQuery();
-					while (rsUserCams.next()) {
-						accessCamId = rsUserCams.getLong("id");
-						if(accessCamId == actualCamId){
+				long actualGroupId = 0;
+				long accessGroupId = 0;
+
+				while(rsAllUser.next()){		
+					UserInGroup userInGroup = new UserInGroup();
+					actualGroupId = rsAllUser.getLong("id");
+					ResultSet rsGroupsUsers= pstmtGroupsUsers.executeQuery();
+					while (rsGroupsUsers.next()) {
+						accessGroupId = rsGroupsUsers.getLong("id");
+						if(accessGroupId == actualGroupId){
 							access = 1;
 						}
 					}		
-					camToUser.setName(rsAllCam.getString("name"));
-					camToUser.setAccess(access);
-					camToUser.setCamid(rsAllCam.getLong("id"));
-					camList.add(camToUser);
+					userInGroup.setName(rsAllUser.getString("username"));
+					userInGroup.setAccess(access);
+					userInGroup.setUserid(rsAllUser.getLong("id"));
+					groupList.add(userInGroup);
 					access = 0;
 				}				
-			return camList;			
+			return groupList;			
 		} catch (Exception e) {
 			throw new UserNotFoundException();
 		} finally {	

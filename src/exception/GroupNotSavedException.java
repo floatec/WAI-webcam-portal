@@ -3,6 +3,6 @@ package exception;
 public class GroupNotSavedException extends RuntimeException {
 	
 	public GroupNotSavedException() {
-		super("Kamera konnte nicht gespeichert werden!");
+		super("Benutzer konnten der Gruppe nicht zugeordnet werden!");
 	}
 }
