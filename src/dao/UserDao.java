@@ -11,4 +11,5 @@ public interface UserDao {
 		public void deleteUser(Long id);
 		public List<User> list();
 		public List<CamToUser> getUserCams(Long id);
+		
 	}

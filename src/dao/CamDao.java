@@ -8,4 +8,5 @@ public interface CamDao {
 	public Cam getCam(Long id);
 	public void toggleStatus(Long id, String status);
 	public List<Cam> list();
+	public List<Cam> getCamsForuser(long id);
 }

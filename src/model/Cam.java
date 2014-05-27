@@ -38,4 +38,15 @@ public class Cam {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		try {
+			Cam other = (Cam) obj;
+			return (other.id==this.id);
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
 }
