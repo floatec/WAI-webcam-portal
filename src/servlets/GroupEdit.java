@@ -3,6 +3,8 @@
  */
 package servlets;
 
+import helper.SessionHelper;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -28,7 +30,9 @@ public class GroupEdit extends HttpServlet {
 	final GroupDao groupDao = DaoFactory.getInstance().getGroupDao();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		if(!SessionHelper.checklogin(request, response)){
+			return;
+		}
 		String action = request.getParameter("action");
 		
 		if (action == null) {

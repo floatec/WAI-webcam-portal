@@ -1,5 +1,7 @@
 package servlets;
 
+import helper.SessionHelper;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -29,7 +31,9 @@ private static final long serialVersionUID = 1L;
 	final UserDao userDao = DaoFactory.getInstance().getUserDao();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		if(!SessionHelper.checklogin(request, response)){
+			return;
+		}
 		String action = request.getParameter("action");
 		
 		if (action == null) {
