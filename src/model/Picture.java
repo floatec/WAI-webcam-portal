@@ -1,5 +1,7 @@
 package model;
 
+import java.io.File;
+
 public class Picture {
 	
 	private long id;
@@ -17,6 +19,12 @@ public class Picture {
 	
 	public String getPath() {
 		return path;
+	}
+
+	public String getPathSmall() {
+		return  path.
+	    	     substring(0,path.lastIndexOf(File.separator))
+                + "/small" + path.substring(path.lastIndexOf(File.separator));
 	}
 	
 	public String getTimestamp() {
