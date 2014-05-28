@@ -35,8 +35,6 @@ public class UserList extends HttpServlet {
 			 return;
 		}
 		User ses = SessionHelper.currentUser(request);
-		System.out.println(ses.getGroup());
-		System.out.println(ses.getUsername());
 		List<User> collection = userDao.list();
 		request.setAttribute("users", collection);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/userList.jsp");

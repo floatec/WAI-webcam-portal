@@ -114,3 +114,7 @@ WITH (
 );
 ALTER TABLE camtouser
   OWNER TO postgres;
+  
+INSERT INTO "user" (username, password, saltvalue) VALUES ('admin', '3015a776488ca32c01f0148dbf892247c7e4054ebaf08cd7b945bc76e8468101', '3404');
+INSERT INTO "group" (name) VALUES ('admin'), ('schichtleiter'), ('user');
+INSERT INTO usertogroup (userid, groupid) VALUES (1,1); 
