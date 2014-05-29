@@ -1,5 +1,7 @@
 package dao;
 
+import helper.SessionHelper;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -11,10 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
+import javax.servlet.RequestDispatcher;
+
 import exception.UserNotDeletedException;
 import exception.UserNotFoundException;
 import exception.UserNotSavedException;
 import jndi.JndiFactory;
+import model.Cam;
 import model.CamToUser;
 import model.User;
 
@@ -280,7 +287,7 @@ public class UserDaoImpl implements UserDao {
 			long access = 0;
 			long actualCamId = 0;
 			long accessCamId = 0;
-				
+
 			// Einmal �ber alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
 			while(rsAllCam.next()){		
 				CamToUser camToUser = new CamToUser();

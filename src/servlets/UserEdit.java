@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -61,9 +62,42 @@ private static final long serialVersionUID = 1L;
 		} else if(action.equals("userEdit")) {			
 			try {
 				User user = userDao.getUser(id);
+				CamDao camDao = DaoFactory.getInstance().getCamDao();
 				List<CamToUser> camList = userDao.getUserCams(id);
+				List<CamToUser> camListForUser = new ArrayList<CamToUser>();
+			
+				// Ist der Benutzer kein Admin, darf der Benutzer nicht die Berechtigung für alle Cams sondern nur für seine vergeben
+				if(!SessionHelper.currentUser(request).getGroup().equals("admin")){
+						
+					List<Cam> collectioncam = camDao.getCamsForuser(SessionHelper.currentUser(request).getId());
+					
+					// Wenn die Liste des Benutzer leer ist, darf er keine Cams zum Nutzer hinzufügen
+					if(collectioncam.isEmpty()){
+						for (int i = 0; i < camList.size(); i++) {
+							camList.removeAll(camList);
+						}
+					}else{
+						// Alle Cams 
+						for (int i = 0; i < camList.size(); i++) {
+							// AlleCams vom User
+							for (int j = 0; j < collectioncam.size(); j++) {
+								// Wenn die IDS der camms gleich sind, darf der User die Cam sehen und anderen hinzufügen
+								if(camList.get(i).getCamid() == collectioncam.get(j).getId()){								
+									CamToUser ctu = new CamToUser();
+									ctu.setCamid(camList.get(i).getCamid());
+									ctu.setAccess(camList.get(i).getAccess());
+									ctu.setName(camList.get(i).getName());
+									camListForUser.add(ctu);
+								}
+							}
+						}
+					}		
+				}else{
+					camListForUser =  userDao.getUserCams(id);
+				}
+				
 				request.setAttribute("user", user);
-				request.setAttribute("cams", camList);
+				request.setAttribute("cams", camListForUser);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/userEdit.jsp");
 				dispatcher.forward(request, response);
 			} catch (CamNotFoundException e) {
