@@ -40,9 +40,7 @@ public class GroupDaoImpl implements GroupDao  {
 				pstmt.executeUpdate();
 			}
 			
-			System.out.println(userList.length);
-
-			if(userList.length != 0 ){
+			if(userList != null ){
 				for (String user : userList) {
 					Long userID = Long.parseLong(user);
 					pstmt = connection.prepareStatement("delete from usertogroup where userid = ?");
