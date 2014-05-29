@@ -36,6 +36,9 @@ public class GroupDaoImpl implements GroupDao  {
 			
 			for (String user : userList) {
 				Long userID = Long.parseLong(user);
+				pstmt = connection.prepareStatement("delete from usertogroup where userid = ?");
+				pstmt.setLong(1, userID);
+				pstmt.executeUpdate();
 				pstmt = connection.prepareStatement("insert into usertogroup (userid, groupid) values (?, ?)");
 				pstmt.setLong(1, userID);
 				pstmt.setLong(2, group);

@@ -52,13 +52,12 @@ private static final long serialVersionUID = 1L;
 		
 		if (request.getParameter("id") != null) {
 			id = Long.valueOf(request.getParameter("id"));
-		}
-		
-		if(id == 1){
-			User currentUser = SessionHelper.currentUser(request);
-			if(SessionHelper.currentUser(request).getId() != 1){
-				response.sendRedirect(request.getContextPath() + "/userList");
-				return;
+			if(id == 1){
+				User currentUser = SessionHelper.currentUser(request);
+				if(SessionHelper.currentUser(request).getId() != 1){
+					response.sendRedirect(request.getContextPath() + "/userList");
+					return;
+				}
 			}
 		}
 		
