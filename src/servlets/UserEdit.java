@@ -53,7 +53,15 @@ private static final long serialVersionUID = 1L;
 		if (request.getParameter("id") != null) {
 			id = Long.valueOf(request.getParameter("id"));
 		}
-				
+		
+		if(id == 1){
+			User currentUser = SessionHelper.currentUser(request);
+			if(SessionHelper.currentUser(request).getId() != 1){
+				response.sendRedirect(request.getContextPath() + "/userList");
+				return;
+			}
+		}
+		
 		if(action.equals("userAdd")){
 			List<CamToUser> camList = userDao.getUserCams(id);
 			request.setAttribute("cams", camList);
@@ -100,13 +108,16 @@ private static final long serialVersionUID = 1L;
 				request.setAttribute("cams", camListForUser);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/userEdit.jsp");
 				dispatcher.forward(request, response);
+					
 			} catch (CamNotFoundException e) {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");
 				dispatcher.forward(request, response);
 			}				
 		} else if(action.equals("userDelete")) {			
 			try {
-				userDao.deleteUser(id);
+				if(id != 1){
+					userDao.deleteUser(id);					
+				}
 				response.sendRedirect(request.getContextPath() + "/userList");
 			} catch (CamNotToggledException e) {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/error.jsp");

@@ -174,7 +174,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			connection = jndi.getConnection("jdbc/postgres");
 			PreparedStatement pstmt;
-			if (id != null && id != 1) {
+			if (id != null) {
 				pstmt = connection.prepareStatement("delete from usertogroup where userid = ?");
 				pstmt.setLong(1, id);
 				pstmt.executeUpdate();
