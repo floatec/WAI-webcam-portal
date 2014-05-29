@@ -70,8 +70,9 @@ public class GroupEdit extends HttpServlet {
 			id = Long.valueOf(request.getParameter("id"));
 		}
 		
-		String[] usersInGroup = request.getParameterValues("users"); 
-			
+		String[] usersInGroup = request.getParameterValues("users");
+		
+				
 		try {		
 			groupDao.saveUsersToGroup(id, usersInGroup);
 			response.sendRedirect(request.getContextPath() + "/groupList");
