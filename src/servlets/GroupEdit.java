@@ -33,7 +33,12 @@ public class GroupEdit extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
-
+		if(!SessionHelper.currentUser(request).getGroup().equals("admin")){
+			RequestDispatcher requestDispatcher = request
+					.getRequestDispatcher("/jsp/noaccess.jsp");
+			requestDispatcher.forward(request, response);
+			 return;
+		}
 		
 		String action = request.getParameter("action");
 		
@@ -65,8 +70,9 @@ public class GroupEdit extends HttpServlet {
 			id = Long.valueOf(request.getParameter("id"));
 		}
 		
-		String[] usersInGroup = request.getParameterValues("users"); 
-			
+		String[] usersInGroup = request.getParameterValues("users");
+		
+				
 		try {		
 			groupDao.saveUsersToGroup(id, usersInGroup);
 			response.sendRedirect(request.getContextPath() + "/groupList");

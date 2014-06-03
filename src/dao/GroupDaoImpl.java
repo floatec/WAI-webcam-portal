@@ -33,14 +33,26 @@ public class GroupDaoImpl implements GroupDao  {
 			pstmt = connection.prepareStatement("delete from usertogroup where groupid = ?");
 			pstmt.setLong(1, group);
 			pstmt.executeUpdate();
-			
-			for (String user : userList) {
-				Long userID = Long.parseLong(user);
+			if (group == 1) {
 				pstmt = connection.prepareStatement("insert into usertogroup (userid, groupid) values (?, ?)");
-				pstmt.setLong(1, userID);
-				pstmt.setLong(2, group);
+				pstmt.setLong(1, 1);
+				pstmt.setLong(2, 1);
 				pstmt.executeUpdate();
 			}
+			
+			if(userList != null ){
+				for (String user : userList) {
+					Long userID = Long.parseLong(user);
+					pstmt = connection.prepareStatement("delete from usertogroup where userid = ?");
+					pstmt.setLong(1, userID);
+					pstmt.executeUpdate();
+					pstmt = connection.prepareStatement("insert into usertogroup (userid, groupid) values (?, ?)");
+					pstmt.setLong(1, userID);
+					pstmt.setLong(2, group);
+					pstmt.executeUpdate();
+				}
+			}
+
 		} catch (Exception e) {
 			throw new GroupNotSavedException();
 		} finally {
@@ -106,7 +118,9 @@ public class GroupDaoImpl implements GroupDao  {
 					userInGroup.setName(rsAllUser.getString("username"));
 					userInGroup.setAccess(access);
 					userInGroup.setUserid(rsAllUser.getLong("id"));
-					groupList.add(userInGroup);
+					if(userInGroup.getUserid() != 1){
+						groupList.add(userInGroup);
+					}
 					access = 0;
 				}				
 			return groupList;			

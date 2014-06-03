@@ -27,6 +27,13 @@ public class CamList extends HttpServlet {
 			return;
 		}
 
+		if(!SessionHelper.currentUser(request).getGroup().equals("admin")){
+			RequestDispatcher requestDispatcher = request
+					.getRequestDispatcher("/jsp/noaccess.jsp");
+			requestDispatcher.forward(request, response);
+			 return;
+		}
+		
 		List<Cam> collection = camDao.list();
 		request.setAttribute("cams", collection);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/camList.jsp");

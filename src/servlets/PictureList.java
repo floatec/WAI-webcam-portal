@@ -35,13 +35,13 @@ public class PictureList extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
-		System.out.println(SessionHelper.currentUser(request).getUsername());
+		
 		//all cams for current user
 		List<Cam> collectioncam = camDao.getCamsForuser(SessionHelper.currentUser(request).getId());
-		for (int i = 0; i < collectioncam.size(); i++) {
-			System.out.println( collectioncam.get(i));
-			
-		}
+//		for (int i = 0; i < collectioncam.size(); i++) {
+//			System.out.println( collectioncam.get(i));
+//			
+//		}
 		if (collectioncam.size()==0){
 			RequestDispatcher requestDispatcher = request
 					.getRequestDispatcher("/jsp/noaccess.jsp");
@@ -73,8 +73,6 @@ public class PictureList extends HttpServlet {
 		}
 		Cam cam = camDao.getCam(l);
 		
-		
-		
 		// current cam
 		request.setAttribute("cam", cam);
 		
@@ -82,8 +80,6 @@ public class PictureList extends HttpServlet {
 		List<Picture> collection = pictureDao.listByCam(l, date);
 		request.setAttribute("pictures", collection);
 		
-		
-		System.out.println(collectioncam.getClass().getName());
 		request.setAttribute("cams", collectioncam);
 		request.setAttribute("date",date);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/pictureList.jsp");

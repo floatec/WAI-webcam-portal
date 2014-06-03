@@ -57,10 +57,15 @@
 			</tr>			
 			<c:forEach var="user" items="${users}">
 				<tr>			
-					<td><c:out value="${user.username}"/></td>
-					<td>
-						<a class="btn btn-default" href="userEdit?action=userEdit&id=${user.id}">Bearbeiten</a>
-						<a class="btn btn-default" href="userEdit?action=userDelete&id=${user.id}">Löschen</a>
+					<c:if test="${user.id != 1 || loggedInUser.id == 1}">
+						<td><c:out value="${user.username}"/></td>
+						<td>
+							<a class="btn btn-default" href="userEdit?action=userEdit&id=${user.id}">Bearbeiten</a>
+							<c:if test="${user.id != 1}">
+								<a class="btn btn-default" href="userEdit?action=userDelete&id=${user.id}">Löschen</a>
+							</c:if>
+						</td>
+						</c:if>
 					</td>
 				</tr>
 			</c:forEach>	

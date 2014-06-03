@@ -1,5 +1,7 @@
 package dao;
 
+import helper.SessionHelper;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -10,9 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import exception.CamNotFoundException;
-import exception.CamNotSavedException;
-import exception.CamNotToggledException;
+
+
+
+import javax.servlet.RequestDispatcher;
+
 import exception.UserNotDeletedException;
 import exception.UserNotFoundException;
 import exception.UserNotSavedException;
@@ -67,6 +71,14 @@ public class UserDaoImpl implements UserDao {
 			
 			pstmt.setString(1, user.getUsername());
 			pstmt.executeUpdate();
+			
+			if (user.getId() == null) {
+				pstmt = connection.prepareStatement("select max(id) as id from \"user\"");
+				ResultSet rs = pstmt.executeQuery();
+				while (rs.next()) {
+					user.setId(rs.getLong("id"));
+				}
+			}
 			
 			if(cams != null){
 				pstmt = connection.prepareStatement("delete from camtouser where userid = ?");
@@ -139,6 +151,8 @@ public class UserDaoImpl implements UserDao {
 				rs = pstmt.executeQuery();
 				if(rs.next()){
 					user.setGroup(rs.getString("name"));
+				}else{
+					user.setGroup("user");
 				}
 				
 				return user;
@@ -250,35 +264,49 @@ public class UserDaoImpl implements UserDao {
 		Connection connection = null;		
 		try {
 			connection = jndi.getConnection("jdbc/postgres");			
-				//Alle Cams
+			//Alle Cams
+			if ( id == null ){
 				PreparedStatement pstmtAllCam = connection.prepareStatement("select id, name from cam");
 				ResultSet rsAllCam = pstmtAllCam.executeQuery();
-				
-				//CamsForUser
-				PreparedStatement pstmtUserCams = connection.prepareStatement("select c.name, c.id from cam c join camtouser ctu on ctu.camid = c.id where ctu.userid = ?");				
-				pstmtUserCams.setLong(1, id);
 				long access = 0;
-				long actualCamId = 0;
-				long accessCamId = 0;
-				
-				// Einmal �ber alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
-				while(rsAllCam.next()){		
+				while(rsAllCam.next()){	
 					CamToUser camToUser = new CamToUser();
-					actualCamId = rsAllCam.getLong("id");
-					ResultSet rsUserCams = pstmtUserCams.executeQuery();
-					while (rsUserCams.next()) {
-						accessCamId = rsUserCams.getLong("id");
-						if(accessCamId == actualCamId){
-							access = 1;
-						}
-					}		
+					camToUser.setName(rsAllCam.getString("name"));
+					camToUser.setAccess(access);
+					camToUser.setCamid(rsAllCam.getLong("id"));
+					camList.add(camToUser);
+				}
+				return camList;	
+			} else {
+			PreparedStatement pstmtAllCam = connection.prepareStatement("select id, name from cam");
+			ResultSet rsAllCam = pstmtAllCam.executeQuery();
+				
+			//CamsForUser
+			PreparedStatement pstmtUserCams = connection.prepareStatement("select c.name, c.id from cam c join camtouser ctu on ctu.camid = c.id where ctu.userid = ?");				
+			pstmtUserCams.setLong(1, id);
+			long access = 0;
+			long actualCamId = 0;
+			long accessCamId = 0;
+
+			// Einmal �ber alle Listen iterieren. Vergleichen mit den Cams die der User sehen darf.
+			while(rsAllCam.next()){		
+				CamToUser camToUser = new CamToUser();
+				actualCamId = rsAllCam.getLong("id");
+				ResultSet rsUserCams = pstmtUserCams.executeQuery();
+				while (rsUserCams.next()) {
+					accessCamId = rsUserCams.getLong("id");
+					if(accessCamId == actualCamId){
+						access = 1;
+					}
+				}		
 					camToUser.setName(rsAllCam.getString("name"));
 					camToUser.setAccess(access);
 					camToUser.setCamid(rsAllCam.getLong("id"));
 					camList.add(camToUser);
 					access = 0;
-				}				
-			return camList;			
+				}	
+			return camList;	
+			}	
 		} catch (Exception e) {
 			throw new UserNotFoundException();
 		} finally {	

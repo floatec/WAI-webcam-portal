@@ -26,6 +26,12 @@ public class GroupList extends HttpServlet {
 		if(!SessionHelper.checklogin(request, response)){
 			return;
 		}
+		if(!SessionHelper.currentUser(request).getGroup().equals("admin")){
+			RequestDispatcher requestDispatcher = request
+					.getRequestDispatcher("/jsp/noaccess.jsp");
+			requestDispatcher.forward(request, response);
+			 return;
+		}
 		List<Group> collection = groupDao.list();
 		request.setAttribute("groups", collection);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/groupList.jsp");
