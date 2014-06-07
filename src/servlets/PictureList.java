@@ -49,6 +49,9 @@ public class PictureList extends HttpServlet {
 			 return;
 		 }
 		long l = collectioncam.get(0).getId();
+		if(request.getSession().getAttribute("cam-cam")!=null){
+			l =(long) request.getSession().getAttribute("cam-cam");
+		}
 		if (request.getParameter("cam")!=null){
 		 l = Long.parseLong(request.getParameter("cam").toString());
 		 try {
@@ -68,6 +71,9 @@ public class PictureList extends HttpServlet {
 		}
 			
 		String date= new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		if(request.getSession().getAttribute("cam-date")!=null){
+			date =(String) request.getSession().getAttribute("cam-date");
+		}
 		if(request.getParameter("date")!=null){
 		date = request.getParameter("date").toString();
 		}
@@ -83,6 +89,8 @@ public class PictureList extends HttpServlet {
 		request.setAttribute("cams", collectioncam);
 		request.setAttribute("date",date);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jsp/pictureList.jsp");
-		dispatcher.forward(request, response);		
+		dispatcher.forward(request, response);	
+		request.getSession().setAttribute("cam-date", date);
+		request.getSession().setAttribute("cam-cam", cam.getId());
 	}
 }
